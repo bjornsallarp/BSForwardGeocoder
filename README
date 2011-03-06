@@ -1,0 +1,6 @@
+The iPhone and iPad SDK supports reverse geocoding out of the box. Reverse geocoding means you have a coordinate and want to find out where you are located, for instance, the name of the street you are on. 
+Forward geocoding means you know the name of a location and want to find the coordinates.  
+
+This API/sample project demonstrate how you can forward geocode using Googles' geocoding service.
+
+The source is unlicensed and 100% free for you to use with whatever you want. Read more about BSForwardGeocoding @ http://blog.sallarp.com/ipad-iphone-forward-geocoding-api-google/ 
