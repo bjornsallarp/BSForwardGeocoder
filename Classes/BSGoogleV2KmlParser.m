@@ -27,8 +27,11 @@
 {
 	BOOL successfull = TRUE;
 	
+    // Load the data trough NSData, NSXMLParser leaks when loading data
+    NSData *xmlData = [[NSData alloc] initWithContentsOfURL:URL];
+    
 	// Create XML parser
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xmlData];
     
 	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
     [parser setDelegate:self];
@@ -48,6 +51,7 @@
     }
     
     [parser release];
+    [xmlData release];
 	
 	return successfull;
 }

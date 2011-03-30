@@ -28,8 +28,11 @@
 	
 	ignoreAddressComponents = ignore;
 	
+    // Load the data trough NSData, NSXMLParser leaks when loading data
+    NSData *xmlData = [[NSData alloc] initWithContentsOfURL:URL];
+    
 	// Create XML parser
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xmlData];
     
 	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
     [parser setDelegate:self];
@@ -49,6 +52,7 @@
     }
     
     [parser release];
+    [xmlData release];
 	
 	return successfull;
 }
@@ -125,7 +129,7 @@
 			[contentsOfCurrentProperty setString:@""];
 		}
 	}
-	else 
+	else if (contentsOfCurrentProperty != nil)
 	{
 		// If we're not interested in the element we set the variable used 
 		// to collect information to nil.
@@ -289,7 +293,6 @@
 
 -(void)dealloc
 {
-    [contentsOfCurrentProperty release];
     [results release];
 	[super dealloc];
 }
