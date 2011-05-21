@@ -40,14 +40,15 @@ enum {
 	NSString *googleAPiKey;
 	int status;
 	NSArray *results;
-	id<BSForwardGeocoderDelegate, NSObject> delegate;
+	id<BSForwardGeocoderDelegate> delegate;
 }
--(id) initWithDelegate:(id<BSForwardGeocoderDelegate, NSObject>)del;
--(void) findLocation:(NSString *)searchString;
+- (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate;
+- (void)findLocation:(NSString *)searchString;
 
-@property (assign) id<BSForwardGeocoderDelegate, NSObject> delegate;
+@property (assign) id<BSForwardGeocoderDelegate> delegate;
 @property (nonatomic, retain) NSString *searchQuery;
 @property (nonatomic, readonly) int status;
 @property (nonatomic, retain) NSArray *results;
+@property (nonatomic, assign) BOOL useHTTP;
 
 @end
