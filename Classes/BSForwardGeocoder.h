@@ -40,6 +40,7 @@ enum {
 	NSString *googleAPiKey;
 	int status;
 	NSArray *results;
+	BOOL useHTTP;
 	id<BSForwardGeocoderDelegate> delegate;
 }
 - (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate;
