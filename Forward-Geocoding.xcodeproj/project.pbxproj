@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0373787713A18ECC004A465E /* NSString+URLEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0373787613A18ECC004A465E /* NSString+URLEncode.m */; };
 		1D3623260D0F684500981E51 /* Forward_GeocodingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* Forward_GeocodingAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0373787513A18ECC004A465E /* NSString+URLEncode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncode.h"; sourceTree = "<group>"; };
+		0373787613A18ECC004A465E /* NSString+URLEncode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncode.m"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* Forward_GeocodingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forward_GeocodingAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* Forward_GeocodingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forward_GeocodingAppDelegate.m; sourceTree = "<group>"; };
@@ -142,6 +145,8 @@
 				F4C7A375114CF462009DC9F7 /* BSKmlResult.m */,
 				F4C7A4BB114D5BD0009DC9F7 /* BSAddressComponent.h */,
 				F4C7A4BC114D5BD0009DC9F7 /* BSAddressComponent.m */,
+				0373787513A18ECC004A465E /* NSString+URLEncode.h */,
+				0373787613A18ECC004A465E /* NSString+URLEncode.m */,
 			);
 			name = "Forward Geocoding";
 			sourceTree = "<group>";
@@ -236,6 +241,7 @@
 				F4C7A41A114D02CB009DC9F7 /* CustomPlacemark.m in Sources */,
 				F4C7A4B0114D599D009DC9F7 /* BSGoogleV3KmlParser.m in Sources */,
 				F4C7A4BD114D5BD0009DC9F7 /* BSAddressComponent.m in Sources */,
+				0373787713A18ECC004A465E /* NSString+URLEncode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

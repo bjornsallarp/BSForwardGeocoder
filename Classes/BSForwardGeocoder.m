@@ -9,6 +9,7 @@
 //
 
 #import "BSForwardGeocoder.h"
+#import "NSString+URLEncode.h"
 
 
 @implementation BSForwardGeocoder
@@ -53,11 +54,11 @@
 	if (version == 2) {
 		// Create the url to Googles geocoding API, we want the response to be in XML
 		NSString* mapsUrl = [[NSString alloc] initWithFormat:@"%@://maps.google.com/maps/geo?q=%@&gl=se&output=xml&oe=utf8&sensor=false", 
-							 useHTTP ? @"http" : @"https", searchQuery];
+							 useHTTP ? @"http" : @"https", [searchQuery URLEncodedString]];
 		
 		// Create the url object for our request. It's important to escape the 
 		// search string to support spaces and international characters
-		NSURL *url = [[NSURL alloc] initWithString:[mapsUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		NSURL *url = [[NSURL alloc] initWithString:mapsUrl];
 		
 		// Run the KML parser
 		BSGoogleV2KmlParser *parser = [[BSGoogleV2KmlParser alloc] init];
@@ -78,11 +79,11 @@
 	else if (version == 3) {
 		// Create the url to Googles geocoding API, we want the response to be in XML
 		NSString* mapsUrl = [[NSString alloc] initWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", 
-							 useHTTP ? @"http" : @"https", searchQuery];
+							 useHTTP ? @"http" : @"https", [searchQuery URLEncodedString]];
 		
 		// Create the url object for our request. It's important to escape the 
 		// search string to support spaces and international characters
-		NSURL *url = [[NSURL alloc] initWithString:[mapsUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		NSURL *url = [[NSURL alloc] initWithString:mapsUrl];
 		
 		// Run the KML parser
 		BSGoogleV3KmlParser *parser = [[BSGoogleV3KmlParser alloc] init];
