@@ -110,9 +110,6 @@
 	}
 	
 	[pool release];
-	
-	NSLog(@"Found placemarks: %d", [self.results count]);
-	
 }
 
 -(void)dealloc
