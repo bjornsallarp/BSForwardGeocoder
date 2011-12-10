@@ -17,7 +17,7 @@
 
 - (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate
 {
-	if ((self == [super init])) {
+	if ((self = [super init])) {
 		delegate = aDelegate;
 	}
 	return self;
