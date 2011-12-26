@@ -43,10 +43,10 @@ typedef void (^BSForwardGeocoderFailed) (int status, NSString* errorMessage);
 
 @interface BSForwardGeocoder : NSObject <NSURLConnectionDataDelegate>
 - (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate;
-- (void)forwardGeocodeWithQuery:(NSString *)location;
+- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing;
 
 #if NS_BLOCKS_AVAILABLE
-- (void)forwardGeocodeWithQuery:(NSString *)location success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure;
+- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure;
 #endif
 
 @property (nonatomic, assign) id<BSForwardGeocoderDelegate> delegate;

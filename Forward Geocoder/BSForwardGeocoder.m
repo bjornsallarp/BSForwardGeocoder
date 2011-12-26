@@ -66,7 +66,7 @@
     return [encodedString autorelease];
 }
 
-- (void)forwardGeocodeWithQuery:(NSString *)searchQuery
+- (void)forwardGeocodeWithQuery:(NSString *)searchQuery regionBiasing:(NSString *)regionBiasing
 {
     if (self.geocodeConnection) {
         [self.geocodeConnection cancel];
@@ -74,18 +74,23 @@
     
     // Create the url object for our request. It's important to escape the 
     // search string to support spaces and international characters
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10.0];
+    NSString *geocodeUrl = [NSString stringWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]];
+    
+    if (regionBiasing && ![regionBiasing isEqualToString:@""]) {
+        geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&region=", regionBiasing];
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10.0];
     self.geocodeConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 #if NS_BLOCKS_AVAILABLE
-- (void)forwardGeocodeWithQuery:(NSString *)location success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure
+- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure
 {
     self.successBlock = success;
     self.failureBlock = failure;
-    [self forwardGeocodeWithQuery:location];
+    [self forwardGeocodeWithQuery:location regionBiasing:regionBiasing];
 }
 #endif
 

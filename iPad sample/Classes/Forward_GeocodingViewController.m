@@ -112,7 +112,7 @@
 	
 	// Forward geocode!    
 #if NS_BLOCKS_AVAILABLE
-    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text success:^(NSArray *results) {
+    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil success:^(NSArray *results) {
         [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
     } failure:^(int status, NSString *errorMessage) {
         if (status == G_GEO_NETWORK_ERROR) {
@@ -123,7 +123,7 @@
         }
     }];
 #else
-    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text];    
+    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil];    
 #endif
 }
 
