@@ -15,11 +15,10 @@
 #import "BSKmlResult.h"
 #import "CustomPlacemark.h"
 
-@interface Forward_GeocodingViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, BSForwardGeocoderDelegate> {
-	IBOutlet MKMapView *mapView;
-	IBOutlet UISearchBar *searchBar;
-	BSForwardGeocoder *forwardGeocoder;
-}
+@interface Forward_GeocodingViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, BSForwardGeocoderDelegate>
+
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) BSForwardGeocoder *forwardGeocoder;
 
 @end

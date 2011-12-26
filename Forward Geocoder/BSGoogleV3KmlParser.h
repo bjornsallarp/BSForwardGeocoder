@@ -31,7 +31,7 @@
 @property (nonatomic, readonly) int statusCode;
 @property (nonatomic, readonly) NSMutableArray *results;
 
-- (BOOL)parseXMLFileAtURL:(NSURL *)URL 
+- (BOOL)parseXMLData:(NSData *)URL 
 			   parseError:(NSError **)error 
 			   ignoreAddressComponents:(BOOL)ignore;
 

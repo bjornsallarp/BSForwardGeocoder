@@ -22,14 +22,14 @@
 
 @synthesize statusCode, results;
 
-- (BOOL)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error ignoreAddressComponents:(BOOL)ignore
+- (BOOL)parseXMLData:(NSData *)data parseError:(NSError **)error ignoreAddressComponents:(BOOL)ignore
 {
 	BOOL successfull = TRUE;
 	
 	ignoreAddressComponents = ignore;
 	
     // Load the data trough NSData, NSXMLParser leaks when loading data
-    NSData *xmlData = [[NSData alloc] initWithContentsOfURL:URL];
+    NSData *xmlData = [[NSData alloc] initWithData:data];
     
 	// Create XML parser
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xmlData];
@@ -288,8 +288,6 @@
         [contentsOfCurrentProperty appendString:string];
     }
 }
-
-
 
 -(void)dealloc
 {

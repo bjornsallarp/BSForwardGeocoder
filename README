@@ -3,4 +3,10 @@ Forward geocoding means you know the name of a location and want to find the coo
 
 This API/sample project demonstrate how you can forward geocode using Googles' geocoding service.
 
+Features:
+* No dependencies
+* Blocks support
+* Works with Google Maps V3 API
+
 The source is unlicensed and 100% free for you to use with whatever you want. Read more about BSForwardGeocoding @ http://blog.sallarp.com/ipad-iphone-forward-geocoding-api-google/ 
+
