@@ -78,7 +78,7 @@
     NSString *geocodeUrl = [NSString stringWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]];
     
     if (regionBiasing && ![regionBiasing isEqualToString:@""]) {
-        geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&region=", regionBiasing];
+        geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&region=%@", regionBiasing];
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10.0];
