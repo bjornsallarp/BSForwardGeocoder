@@ -10,6 +10,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 #import "BSGoogleV3KmlParser.h"
 
 // Enum for geocoding status responses
@@ -35,18 +36,25 @@ typedef void (^BSForwardGeocoderFailed) (int status, NSString* errorMessage);
 
 @protocol BSForwardGeocoderDelegate<NSObject>
 @required
-- (void)forwardGeocodingDidSucceed:(BSForwardGeocoder*)geocoder withResults:(NSArray *)results;
+- (void)forwardGeocodingDidSucceed:(BSForwardGeocoder *)geocoder withResults:(NSArray *)results;
 @optional
-- (void)forwardGeocoderConnectionDidFail:(BSForwardGeocoder*)geocoder withErrorMessage:(NSString *)errorMessage;
-- (void)forwardGeocodingDidFail:(BSForwardGeocoder*)geocoder withErrorCode:(int)errorCode andErrorMessage:(NSString *)errorMessage;
+- (void)forwardGeocoderConnectionDidFail:(BSForwardGeocoder *)geocoder withErrorMessage:(NSString *)errorMessage;
+- (void)forwardGeocodingDidFail:(BSForwardGeocoder *)geocoder withErrorCode:(int)errorCode andErrorMessage:(NSString *)errorMessage;
+@end
+
+@interface BSForwardGeocoderCoordinateBounds : NSObject
+- (id)initWithSouthWest:(CLLocationCoordinate2D)southwest northEast:(CLLocationCoordinate2D)northeast;
++ (BSForwardGeocoderCoordinateBounds *)boundsWithSouthWest:(CLLocationCoordinate2D)southwest northEast:(CLLocationCoordinate2D)northeast;
+@property (nonatomic, assign) CLLocationCoordinate2D southwest;
+@property (nonatomic, assign) CLLocationCoordinate2D northeast;
 @end
 
 @interface BSForwardGeocoder : NSObject <NSURLConnectionDataDelegate>
 - (id)initWithDelegate:(id<BSForwardGeocoderDelegate>)aDelegate;
-- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing;
+- (void)forwardGeocodeWithQuery:(NSString *)searchQuery regionBiasing:(NSString *)regionBiasing viewportBiasing:(BSForwardGeocoderCoordinateBounds *)viewportBiasing;
 
 #if NS_BLOCKS_AVAILABLE
-- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure;
+- (void)forwardGeocodeWithQuery:(NSString *)searchQuery regionBiasing:(NSString *)regionBiasing viewportBiasing:(BSForwardGeocoderCoordinateBounds *)viewportBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure;
 #endif
 
 @property (nonatomic, assign) id<BSForwardGeocoderDelegate> delegate;

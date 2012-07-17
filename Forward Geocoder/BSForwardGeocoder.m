@@ -53,20 +53,15 @@
 }
 
 // Use Core Foundation method to URL-encode strings, since -stringByAddingPercentEscapesUsingEncoding:
-// doesn't do a complete job. For details, see:
-//   http://simonwoodside.com/weblog/2009/4/22/how_to_really_url_encode/
-//   http://stackoverflow.com/questions/730101/how-do-i-encode-in-a-url-in-an-html-attribute-value/730427#730427
+// doesn't do a complete job. This code is copied from AFNetworking
 - (NSString *)URLEncodedString:(NSString *)string
 {
-    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                  (CFStringRef)string,
-                                                                                  NULL,
-                                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                  kCFStringEncodingUTF8);
-    return [encodedString autorelease];
+    static NSString * const kBSGeocodingLegalCharactersToBeEscaped = @"?!@#$^&%*+=,:;'\"`<>()[]{}/\\|~ ";
+    
+	return [(NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, (CFStringRef)kBSGeocodingLegalCharactersToBeEscaped, kCFStringEncodingUTF8) autorelease];
 }
 
-- (void)forwardGeocodeWithQuery:(NSString *)searchQuery regionBiasing:(NSString *)regionBiasing
+- (void)forwardGeocodeWithQuery:(NSString *)searchQuery regionBiasing:(NSString *)regionBiasing viewportBiasing:(BSForwardGeocoderCoordinateBounds *)viewportBiasing
 {
     if (self.geocodeConnection) {
         [self.geocodeConnection cancel];
@@ -74,11 +69,17 @@
     
     // Create the url object for our request. It's important to escape the 
     // search string to support spaces and international characters
-    
     NSString *geocodeUrl = [NSString stringWithFormat:@"%@://maps.google.com/maps/api/geocode/xml?address=%@&sensor=false", self.useHTTP ? @"http" : @"https", [self URLEncodedString:searchQuery]];
     
     if (regionBiasing && ![regionBiasing isEqualToString:@""]) {
         geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&region=%@", regionBiasing];
+    }
+    
+    if (viewportBiasing) {
+        NSString *boundsString = [NSString stringWithFormat:@"%f,%f%|%f,%f", viewportBiasing.southwest.latitude, viewportBiasing.southwest.longitude, viewportBiasing.northeast.latitude, viewportBiasing.northeast.longitude];
+        
+        // We need to escape the parameters
+        geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&bounds=%@", [self URLEncodedString:boundsString]];
     }
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:geocodeUrl] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10.0];
@@ -86,11 +87,11 @@
 }
 
 #if NS_BLOCKS_AVAILABLE
-- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure
+- (void)forwardGeocodeWithQuery:(NSString *)location regionBiasing:(NSString *)regionBiasing viewportBiasing:(BSForwardGeocoderCoordinateBounds *)viewportBiasing success:(BSForwardGeocoderSuccess)success failure:(BSForwardGeocoderFailed)failure
 {
     self.successBlock = success;
     self.failureBlock = failure;
-    [self forwardGeocodeWithQuery:location regionBiasing:regionBiasing];
+    [self forwardGeocodeWithQuery:location regionBiasing:regionBiasing viewportBiasing:viewportBiasing];
 }
 #endif
 
@@ -146,7 +147,6 @@
         [self.delegate forwardGeocoderConnectionDidFail:self withErrorMessage:errorMessage];
     }
 
-    
     self.geocodeConnectionData = nil;
     self.geocodeConnection = nil;
 }
@@ -181,4 +181,24 @@
     self.geocodeConnectionData = nil;
 }
 
+@end
+
+@implementation BSForwardGeocoderCoordinateBounds
+@synthesize southwest = _southwest;
+@synthesize northeast = _northeast;
+
+- (id)initWithSouthWest:(CLLocationCoordinate2D)southwest northEast:(CLLocationCoordinate2D)northeast
+{
+    if ((self = [super init])) {
+        self.southwest = southwest;
+        self.northeast = northeast;
+    }
+    
+    return self;
+}
+
++ (BSForwardGeocoderCoordinateBounds *)boundsWithSouthWest:(CLLocationCoordinate2D)southwest northEast:(CLLocationCoordinate2D)northeast
+{
+    return [[[self alloc] initWithSouthWest:southwest northEast:northeast] autorelease];
+}
 @end

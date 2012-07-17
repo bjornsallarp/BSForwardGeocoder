@@ -24,7 +24,8 @@
 	self.searchBar.delegate = self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
@@ -103,16 +104,24 @@
 
 
 #pragma mark - UI Events
-- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
-
+- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar 
+{
 	NSLog(@"Searching for: %@", self.searchBar.text);
 	if (self.forwardGeocoder == nil) {
-		self.forwardGeocoder = [[BSForwardGeocoder alloc] initWithDelegate:self];
+		self.forwardGeocoder = [[[BSForwardGeocoder alloc] initWithDelegate:self] autorelease];
 	}
 	
-	// Forward geocode!    
+    // If you want to bias on coordinates pass a bounds object. This example is proof that the "Winnetka" example works (see https://developers.google.com/maps/documentation/geocoding/#Viewports) 
+    CLLocationCoordinate2D southwest, northeast;
+    southwest.latitude = 34.172684;
+    southwest.longitude = -118.604794;
+    northeast.latitude = 34.236144;
+    northeast.longitude = -118.500938;
+    BSForwardGeocoderCoordinateBounds *bounds = [BSForwardGeocoderCoordinateBounds boundsWithSouthWest:southwest northEast:northeast];
+
+	// Forward geocode!
 #if NS_BLOCKS_AVAILABLE
-    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil success:^(NSArray *results) {
+    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil viewportBiasing:bounds success:^(NSArray *results) {
         [self forwardGeocodingDidSucceed:self.forwardGeocoder withResults:results];
     } failure:^(int status, NSString *errorMessage) {
         if (status == G_GEO_NETWORK_ERROR) {
@@ -123,21 +132,19 @@
         }
     }];
 #else
-    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil];    
+    [self.forwardGeocoder forwardGeocodeWithQuery:self.searchBar.text regionBiasing:nil viewportBiasing:nil];
 #endif
 }
 
 #pragma mark - MKMap methods
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>) annotation
 {
-	
 	if ([annotation isKindOfClass:[CustomPlacemark class]]) {
 		MKPinAnnotationView *newAnnotation = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:[annotation title]];
 		newAnnotation.pinColor = MKPinAnnotationColorGreen;
 		newAnnotation.animatesDrop = YES; 
 		newAnnotation.canShowCallout = YES;
 		newAnnotation.enabled = YES;
-		
 		
 		NSLog(@"Created annotation at: %f %f", ((CustomPlacemark*)annotation).coordinate.latitude, ((CustomPlacemark*)annotation).coordinate.longitude);
 		
@@ -187,14 +194,12 @@
     self.searchBar = nil;
 }
 
-
-- (void)dealloc {
+- (void)dealloc 
+{
     [_mapView release];
 	[_searchBar release];
     [_forwardGeocoder release];
-	
-	[super dealloc];
-	
+	[super dealloc];	
 }
 
 @end
