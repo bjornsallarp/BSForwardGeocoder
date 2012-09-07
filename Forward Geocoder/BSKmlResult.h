@@ -12,7 +12,7 @@
 #import <MapKit/MapKit.h>
 #import "BSAddressComponent.h"
 
-@interface BSKmlResult : NSObject
+@interface BSKmlResult : NSObject<NSCoding>
 
 @property (nonatomic, retain) NSString *address;
 @property (nonatomic, assign) NSInteger accuracy;
