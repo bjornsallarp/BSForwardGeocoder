@@ -76,7 +76,7 @@
     }
     
     if (viewportBiasing) {
-        NSString *boundsString = [NSString stringWithFormat:@"%f,%f%|%f,%f", viewportBiasing.southwest.latitude, viewportBiasing.southwest.longitude, viewportBiasing.northeast.latitude, viewportBiasing.northeast.longitude];
+        NSString *boundsString = [NSString stringWithFormat:@"%f,%f|%f,%f", viewportBiasing.southwest.latitude, viewportBiasing.southwest.longitude, viewportBiasing.northeast.latitude, viewportBiasing.northeast.longitude];
         
         // We need to escape the parameters
         geocodeUrl = [geocodeUrl stringByAppendingFormat:@"&bounds=%@", [self URLEncodedString:boundsString]];
