@@ -37,6 +37,76 @@
 @synthesize latitude = _latitude;
 @synthesize longitude = _longitude;
 
+
+- (id)initWithCoder:(NSCoder*)decoder {
+    if (self = [super init]) {
+        self.address = [decoder decodeObjectForKey:@"address"];
+        self.countryNameCode = [decoder decodeObjectForKey:@"countryNameCode"];
+        self.countryName = [decoder decodeObjectForKey:@"countryName"];
+        self.subAdministrativeAreaName = [decoder decodeObjectForKey:@"subAdministrativeAreaName"];
+        self.localityName = [decoder decodeObjectForKey:@"localityName"];
+        self.addressComponents = [decoder decodeObjectForKey:@"addressComponents"];
+        
+        self.accuracy = [decoder decodeIntegerForKey:@"accuracy"];
+
+        self.latitude = [decoder decodeFloatForKey:@"latitude"];
+        self.longitude = [decoder decodeFloatForKey:@"longitude"];
+        self.viewportSouthWestLat = [decoder decodeFloatForKey:@"viewportSouthWestLat"];
+        self.viewportSouthWestLon = [decoder decodeFloatForKey:@"viewportSouthWestLon"];
+        self.viewportNorthEastLat = [decoder decodeFloatForKey:@"viewportNorthEastLat"];
+        self.viewportNorthEastLon = [decoder decodeFloatForKey:@"viewportNorthEastLon"];
+
+        self.boundsSouthWestLat = [decoder decodeFloatForKey:@"boundsSouthWestLat"];
+        self.boundsSouthWestLon = [decoder decodeFloatForKey:@"boundsSouthWestLon"];
+        self.boundsNorthEastLat = [decoder decodeFloatForKey:@"boundsNorthEastLat"];
+        self.boundsNorthEastLon = [decoder decodeFloatForKey:@"boundsNorthEastLon"];
+
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)encoder {
+    
+    if (self.address) {
+        [encoder encodeObject:self.address
+                       forKey:@"address"];
+    }
+    if (self.countryNameCode) {
+        [encoder encodeObject:self.countryNameCode
+                       forKey:@"countryNameCode"];
+    }
+    if (self.countryName) {
+        [encoder encodeObject:self.countryName
+                       forKey:@"countryName"];
+    }
+    if (self.subAdministrativeAreaName) {
+        [encoder encodeObject:self.subAdministrativeAreaName
+                       forKey:@"subAdministrativeAreaName"];
+    }
+    if (self.localityName) {
+        [encoder encodeObject:self.localityName
+                       forKey:@"localityName"];
+    }
+    if (self.addressComponents) {
+        [encoder encodeObject:self.addressComponents
+                       forKey:@"addressComponents"];
+    }
+    [encoder encodeInteger:self.accuracy forKey:@"accuracy"];
+    [encoder encodeFloat:self.latitude forKey:@"latitude"];
+    [encoder encodeFloat:self.longitude forKey:@"longitude"];
+
+    [encoder encodeFloat:self.viewportSouthWestLat forKey:@"viewportSouthWestLat"];
+    [encoder encodeFloat:self.viewportSouthWestLon forKey:@"viewportSouthWestLon"];
+    [encoder encodeFloat:self.viewportNorthEastLat forKey:@"viewportNorthEastLat"];
+    [encoder encodeFloat:self.viewportNorthEastLon forKey:@"viewportNorthEastLon"];
+
+    [encoder encodeFloat:self.boundsSouthWestLat forKey:@"boundsSouthWestLat"];
+    [encoder encodeFloat:self.boundsSouthWestLon forKey:@"boundsSouthWestLon"];
+    [encoder encodeFloat:self.boundsNorthEastLat forKey:@"boundsNorthEastLat"];
+    [encoder encodeFloat:self.boundsNorthEastLon forKey:@"boundsNorthEastLon"];
+}
+
 - (void)dealloc
 {	
     [_address release];
